@@ -283,7 +283,7 @@ class ReadNetcdf:
 
         try: indx = datecheck.index(True)
         except ValueError:
-            print 'No map available this date' 
+            print ('No map available this date')
             return
         
         self.one_map = np.array(self.dataset.variables[var][indx,:,:])
