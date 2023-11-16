@@ -28,7 +28,7 @@ class ReadNetcdf:
         """ Close the dataset. """
         self.dataset.close()
 
- def get_map(self, var, **kwargs):
+    def get_map(self, var, **kwargs):
         """Get a map for a particular variable and time."""
 
         """
