@@ -312,7 +312,7 @@ class ReadNetcdf:
         comment = getattr(self.dataset.variables[var], attr)
         
         m = re.search(prefix+'(.+)$', comment)
-        if m == None: print 'ReadNetcdf expected to find platform index list in comment.'
+        if m == None: print ('ReadNetcdf expected to find platform index list in comment.')
         
         satlist = m.group(1).split(',')
         for sat in satlist:
