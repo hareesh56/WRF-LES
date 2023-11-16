@@ -54,7 +54,7 @@ class ReadNetcdf:
 
         year = kwargs.get('year')
         month = kwargs.get('month')
-       print('Get map for year = ' + str(year) + ', month = ' + str(month))
+        print('Get map for year = ' + str(year) + ', month = ' + str(month))
 
         self.long_name = getattr(self.dataset.variables[var], 'long_name')
         print('Get map of ' + self.long_name)
