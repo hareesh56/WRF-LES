@@ -317,7 +317,7 @@ class ReadNetcdf:
         satlist = m.group(1).split(',')
         for sat in satlist:
             s = sat.split('==')
-            print s
+            print (s)
             try:
                 self.satellite_index_list.append(int(s[0]))
                 self.satellite_name_list.append(str(s[1]))
