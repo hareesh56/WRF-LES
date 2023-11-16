@@ -101,7 +101,7 @@ class ReadNetcdf:
         """
 
         one_map, map_date, satellites = self.get_map(var, **kwargs)
-        if one_map == None: return
+        if one_map is None: return
         
         self._set_plot(var, **kwargs)
         fig = plt.figure(facecolor=self.facecolor)
@@ -328,10 +328,10 @@ class ReadNetcdf:
         """ Find satellites used."""
 
         self.satellites = None
-        if self.one_map == None: return
+        if self.one_map is None: return
 
         self.satellites = self.satellite_name_list        
-        if self.map_date == None: return            
+        if self.map_date is None: return            
        
         try:
             indx = self.dates[self.timevar].index(self.map_date)
