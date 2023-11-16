@@ -361,6 +361,10 @@ class ReadNetcdf:
         """Get the base date (the date in 'days since ...')."""
 
         self.basedate = {}
+
+        if var not in self.dataset.variables:
+            print(f"Variable '{var}' not found in the dataset.")
+            return
         
         datestring = self.dataset.variables[var].units
         yy, mm, dd = self._parse_date(datestring, **kwargs)        
