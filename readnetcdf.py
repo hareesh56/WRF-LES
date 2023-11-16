@@ -238,7 +238,7 @@ class ReadNetcdf:
         di = self.lonperdeg
 
         self.yloc, self.ylab = zip(*[ [dj*tsy*j, str(-1*(tsy*j-90))]
-                                      for j in range(180/tsy +1) ])
+                                      for j in range(int(180/tsy) + 1) ])
 
         coords = getattr(self.dataset.variables[var],'coordinates')
         if 'longitude' in coords:
