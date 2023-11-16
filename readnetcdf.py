@@ -351,7 +351,7 @@ class ReadNetcdf:
         self.dates = {}
 
         try: varlist = args[0]
-        except IndexError: varlist = ['time', 'climatology_time']
+        except IndexError: varlist = ['time']
 
         for var in varlist:
             self._get_base_date(var, **kwargs)
