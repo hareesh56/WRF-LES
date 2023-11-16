@@ -54,16 +54,16 @@ class ReadNetcdf:
 
         year = kwargs.get('year')
         month = kwargs.get('month')
-        print 'Get map for year = ' + str(year) + ', month = ' + str(month)
+       print('Get map for year = ' + str(year) + ', month = ' + str(month))
 
-        self.long_name  = getattr(self.dataset.variables[var], 'long_name')
-        print 'Get map of ' + self.long_name
+        self.long_name = getattr(self.dataset.variables[var], 'long_name')
+        print('Get map of ' + self.long_name)
             
         self._extract_one_map(var, year=year, month=month)        
         self._find_satellites_used()
 
-        print 'Satellites used:', self.satellites        
-        print
+        print('Satellites used:', self.satellites)
+        print()
         
         return self.one_map, self.map_date, self.satellites
 
@@ -154,9 +154,9 @@ class ReadNetcdf:
             prints the time series
         """
         
-        print var
+        print(var)
         for imonth, month in enumerate(self.dates['time']):
-            print month.strftime('%b %Y'), self.dataset.variables[var][imonth]
+            print(month.strftime('%b %Y'), self.dataset.variables[var][imonth])
 
     def print_linear_trend(self, var):
         """Print linear trend in a variable."""
@@ -168,9 +168,9 @@ class ReadNetcdf:
             prints the trend for variable
         """
         
-        print getattr(self.dataset.variables[var], 'long_name')
+        print (getattr(self.dataset.variables[var], 'long_name'))
         attr = 'linear_trend'
-        print attr + ' in ' + var + ' =', getattr(self.dataset.variables[var], attr)
+        print (attr + ' in ' + var + ' =', getattr(self.dataset.variables[var], attr))
 
     # The functions that follow support the get_map() and plot_map() methods.
 
@@ -268,10 +268,10 @@ class ReadNetcdf:
             return
 
         if getattr(self.dataset,'time_coverage_resolution') != 'P1M':
-            print 'ReadNetcdf expects monthly average time resolution'
+            print('ReadNetcdf expects monthly average time resolution')
 
         self.timevar = getattr(self.dataset.variables[var],'coordinates').split()[0]
-        if 'time' not in self.timevar: print 'ReadNetcdf could not find time coordinate'
+        if 'time' not in self.timevar: print('ReadNetcdf could not find time coordinate')
 
         yearin = year
         if not year: year = self.basedate[self.timevar].year
@@ -374,7 +374,7 @@ class ReadNetcdf:
         if prefix == None: prefix = 'days since '
 
         m = re.search(prefix+'(\d+)-(\d+)-(\d+).*', datestring)
-        if m == None: print 'ReadNetcdf expects time units of the form: days since y-m-d ...'
+        if m == None: print ('ReadNetcdf expects time units of the form: days since y-m-d ...')
 
         return int(m.group(1)),int(m.group(2)),int(m.group(3))
         
