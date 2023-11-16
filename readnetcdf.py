@@ -243,7 +243,7 @@ class ReadNetcdf:
         coords = getattr(self.dataset.variables[var],'coordinates')
         if 'longitude' in coords:
             self.xloc, self.xlab = zip(*[ [di*tsx*i, str(tsx*i+ls) if tsx*i+ls<360 else str(tsx*i+ls-360)]
-                                          for i in range(360/tsx +1) ])
+                                          for i in range(int(360/tsx) +1) ])
         else:
             y1, m1, d1 = self._parse_date(getattr(self.dataset,'time_coverage_start'), prefix='')
             y2, m2, d2 = self._parse_date(getattr(self.dataset,'time_coverage_end'), prefix='')            
