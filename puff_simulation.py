@@ -121,3 +121,70 @@ def puff_model(x, y, z, current_time, leak, atm, time, wind, angle):
     cppm = conc * 1e6 / 656
 
     return cppm
+    
+def Sensor(Leaksize=None, LeakHeight=None, TSim=None, Tstep=None, x=None, y=None, z=None, dir_out='Results'):
+    if Leaksize is None:
+        AllLeaks = pickle.load(open('Data_Input/LeakData.p', 'rb'))
+        Leaks = random.sample(AllLeaks.leak_size, 1)
+        Leaksize = Leaks[0]
+
+    if LeakHeight is None:
+        LeakHeight = 2
+
+    if TSim is None:
+        TSim = 600
+
+    if Tstep is None:
+        Tstep = 30
+
+    if x is None:
+        xloc = np.linspace(-51, 49, 21)
+
+    if y is None:
+        yloc = np.linspace(-50, 50, 21)
+
+    if z is None:
+        zloc = np.linspace(0, 5, 6)
+
+    Windstep = 60
+    Windsize = int(TSim / Windstep)
+
+    sim_time = Time(TSim, Tstep, Windstep)
+    leak = Leak(Leaksize, LeakHeight)
+
+    W = pickle.load(open('Data_Input/WindData.p', 'rb'))
+    start = np.random.randint(0, len(W.wind) - Windsize)
+    list1 = W.wind[start: start+Windsize]   #sequential selection
+    list2 = W.direction[start: start+Windsize]
+    wind_speed = np.array(list1)
+    wind_angle = np.array(list2)
+    wind_angles = (wind_angle - 180) * np.pi / 180
+
+    rep_factor = int(Windstep / Tstep)
+
+    winds = np.repeat(wind_speed, rep_factor)
+    angles = np.repeat(wind_angles, rep_factor)
+
+    concentration = np.empty((len(winds), 1), dtype=object)
+
+    for ind in range(0, len(sim_time.T)):
+        curr_time = sim_time.T[ind]
+        atm = Atmos(winds[ind])
+        concentration[ind, 0] = puff_model(xloc, yloc, zloc, curr_time, leak, atm, sim_time, winds[ind], angles[ind])
+
+    quotient = (sim_time.T - 1) // Windstep
+    index = (1 + quotient) * rep_factor - 1
+
+    off = np.zeros((len(winds) + rep_factor, 1), dtype=object)
+
+    for m in range(0, len(sim_time.T)):
+        temp = int(index[m])
+        off[m + rep_factor, 0] = concentration[temp, 0] - concentration[m, 0]
+
+    final = np.empty((len(winds), 1), dtype=object)
+
+    for p in range(0, len(sim_time.T)):
+        final[p, 0] = concentration[p, 0] + off[p, 0]
+
+    Result = Results(sim_time.T, Leaksize, final, xloc, yloc, zloc, LeakHeight, winds, wind_angle)
+    save_results(dir_out, Result)
