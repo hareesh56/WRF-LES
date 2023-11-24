@@ -141,9 +141,19 @@ class ReadNetcdf:
         filename = kwargs.get('filename')
         if filename: fig.savefig(filename)
 
+        # Return the animation object
+        anim = animation.FuncAnimation(fig, self._animate, fargs=(one_map,), frames=1, repeat=False)
+        
         plt.show()
         plt.close()
-
+        
+        return anim 
+    
+    def _animate(self, i, one_map):
+        plt.clf()
+        plt.imshow(one_map, cmap=self.cmap, vmin=self.vmin, vmax=self.vmax)
+        plt.title(f'Frame {i + 1}')
+        
     def print_anomaly_timeseries(self, var):
         """Print time series for a variable."""
         """
